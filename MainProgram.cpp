@@ -48,9 +48,9 @@ private:
     double radius;
 
 public:
-Circle(double r) : Shape("Circle"), radius(r) { }
+    Circle(double r) : Shape("Circle"), radius(r) { }
 
-double area() const override { return 3.14 * radius * radius; }
+    double area() const override { return 3.14159265358979323846 * radius * radius; }
 
 };
 
