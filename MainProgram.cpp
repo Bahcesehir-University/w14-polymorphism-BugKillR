@@ -1,22 +1,11 @@
-// ============================================================
-// MainProgram.cpp  —  STUDENT VERSION
-// Lab: Inheritance and Polymorphism
-// Standard: C++17  |  Single file only, no headers
-// ------------------------------------------------------------
-// Complete every TODO. Do NOT rename classes, methods, or
-// functions: the autograder depends on these exact names.
-// ============================================================
+#ifndef KIJO_WAS_HERE
+# define KIJO_WAS_HERE
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cmath>
 
-// ================================
-// CLASS DEFINITIONS
-// ================================
-
-// --- Base class -------------------------------------------------
 class Shape {
 protected:
     std::string name;
@@ -24,17 +13,10 @@ protected:
 public:
     Shape(const std::string& n) : name(n) {}
 
-    // TODO 1: Make this destructor VIRTUAL.
-    //         (Add the 'virtual' keyword in front.)
-    //         A virtual destructor is required for safe deletion
-    //         through a Shape* pointer.
     virtual ~Shape() {}
 
-    // Pure virtual: Shape is abstract and cannot be instantiated.
-    // Each derived class MUST override area(). (Leave this line.)
     virtual double area() const = 0;
 
-    // describe() is virtual with a default body — leave as is.
     virtual std::string describe() const {
         return name + " with area " + std::to_string(area());
     }
@@ -42,7 +24,6 @@ public:
     std::string getName() const { return name; }
 };
 
-// --- Derived class: Circle --------------------------------------
 class Circle : public Shape {
 private:
     double radius;
@@ -54,7 +35,6 @@ public:
 
 };
 
-// --- Derived class: Rectangle -----------------------------------
 class Rectangle : public Shape {
 protected:
     double width;
@@ -67,7 +47,6 @@ public:
 
 };
 
-// --- Derived class: Square (inherits from Rectangle) ------------
 class Square : public Rectangle {
 public:
     Square(double s) : Rectangle(s, s) {
@@ -75,13 +54,6 @@ public:
     }
 };
 
-// ================================
-// FUNCTION IMPLEMENTATIONS
-// ================================
-
-// TODO 7: Sum the area() of every shape in the vector.
-//         Must work polymorphically (through Shape*).
-//         An empty vector returns 0.0.
 double totalArea(const std::vector<Shape*>& shapes) {
     if (shapes.empty())
         return 0.0;
@@ -92,9 +64,9 @@ double totalArea(const std::vector<Shape*>& shapes) {
     return res;
 }
 
-// TODO 8: Return getName() of the shape with the LARGEST area.
-//         If the vector is empty, return "".
 std::string largestShapeName(const std::vector<Shape*>& shapes) {
+    if (shapes.empty())
+        return "";
     double largest = 0;
     std::string shape;
     
@@ -125,3 +97,5 @@ int main() {
     for (Shape* s : shapes) delete s;
     return 0;
 }
+
+#endif
