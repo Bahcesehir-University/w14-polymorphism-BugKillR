@@ -1,0 +1,80 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Circle::area
+      id: circle-area
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Circle::area
+        setup-command: ''
+        command: make test_1
+        timeout: 10
+        max-score: 15
+    - name: Rectangle::area
+      id: rectangle-area
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Rectangle::area
+        setup-command: ''
+        command: make test_2
+        timeout: 2
+        max-score: 15
+    - name: Square chained inheritance
+      id: square-chained-inheritance
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Square chained inheritance
+        setup-command: ''
+        command: make test_3
+        timeout: 2
+        max-score: 20
+    - name: Virtual dispatch
+      id: virtual-dispatch
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Virtual dispatch
+        setup-command: ''
+        command: make test_4
+        timeout: 2
+        max-score: 20
+    - name: totalArea (+ empty case)
+      id: totalarea-empty-case
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: totalArea (+ empty case)
+        setup-command: ''
+        command: make test_5
+        timeout: 2
+        max-score: 15
+    - name: largestShapeName (+ empty case)
+      id: largestshapename-empty-case
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: largestShapeName (+ empty case)
+        setup-command: ''
+        command: make test_6
+        timeout: 2
+        max-score: 15
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CIRCLE-AREA_RESULTS: "${{steps.circle-area.outputs.result}}"
+        RECTANGLE-AREA_RESULTS: "${{steps.rectangle-area.outputs.result}}"
+        SQUARE-CHAINED-INHERITANCE_RESULTS: "${{steps.square-chained-inheritance.outputs.result}}"
+        VIRTUAL-DISPATCH_RESULTS: "${{steps.virtual-dispatch.outputs.result}}"
+        TOTALAREA-EMPTY-CASE_RESULTS: "${{steps.totalarea-empty-case.outputs.result}}"
+        LARGESTSHAPENAME-EMPTY-CASE_RESULTS: "${{steps.largestshapename-empty-case.outputs.result}}"
+      with:
+        runners: circle-area,rectangle-area,square-chained-inheritance,virtual-dispatch,totalarea-empty-case,largestshapename-empty-case
