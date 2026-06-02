@@ -83,7 +83,9 @@ public:
 //         Must work polymorphically (through Shape*).
 //         An empty vector returns 0.0.
 double totalArea(const std::vector<Shape*>& shapes) {
-    double res = 0;
+    if (shapes.empty())
+        return 0.0;
+    double res = 0.0;
     
     for (size_t i = 0; shapes[i]; i++)
         res += shapes[i]->area();
