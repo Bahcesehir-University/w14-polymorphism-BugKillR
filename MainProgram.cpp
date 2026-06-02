@@ -28,7 +28,7 @@ public:
     //         (Add the 'virtual' keyword in front.)
     //         A virtual destructor is required for safe deletion
     //         through a Shape* pointer.
-    ~Shape() {}
+    virtual ~Shape() {}
 
     // Pure virtual: Shape is abstract and cannot be instantiated.
     // Each derived class MUST override area(). (Leave this line.)
@@ -48,15 +48,9 @@ private:
     double radius;
 
 public:
-    // TODO 2: Write the constructor.
-    //   - Call the Shape base constructor with the name "Circle".
-    //   - Store the radius.
-    Circle(double r) /* : ... */ {
-        // TODO
-    }
+Circle(double r) : Shape("Circle"), radius(r) { }
 
-    // TODO 3: Override area().  Area of a circle = PI * r * r.
-    //         Use override.
+double area() const override { return 3.14 * radius * radius; }
 
 };
 
@@ -67,28 +61,18 @@ protected:
     double height;
 
 public:
-    // TODO 4: Write the constructor.
-    //   - Call Shape with the name "Rectangle".
-    //   - Store width and height.
-    Rectangle(double w, double h) /* : ... */ {
-        // TODO
-    }
+    Rectangle(double w, double h) : Shape("Rectangle"), width(w), height(h) { }
 
-    // TODO 5: Override area().  Area of a rectangle = width * height.
+    double area() const override { return width * height; }
 
 };
 
 // --- Derived class: Square (inherits from Rectangle) ------------
 class Square : public Rectangle {
 public:
-    // TODO 6: Write the constructor.
-    //   - A square is a rectangle whose width == height == side.
-    //   - Call the Rectangle constructor with (side, side).
-    //   - Then set name = "Square".
-    Square(double side) /* : ... */ {
-        // TODO
+    Square(double s) : Rectangle(s, s) {
+        name = "Square";
     }
-    // Note: Square reuses Rectangle::area() — no need to rewrite it.
 };
 
 // ================================
@@ -99,15 +83,25 @@ public:
 //         Must work polymorphically (through Shape*).
 //         An empty vector returns 0.0.
 double totalArea(const std::vector<Shape*>& shapes) {
-    // TODO
-    return 0.0;
+    double res = 0;
+    
+    for (size_t i = 0; shapes[i]; i++)
+        res += shapes[i]->area();
+    return res;
 }
 
 // TODO 8: Return getName() of the shape with the LARGEST area.
 //         If the vector is empty, return "".
 std::string largestShapeName(const std::vector<Shape*>& shapes) {
-    // TODO
-    return "";
+    double largest = 0;
+    std::string shape;
+    
+    for (size_t i = 0; shapes[i]; i++)
+        if (shapes[i]->area() > largest) {
+            largest = shapes[i]->area();
+            shape = shapes[i]->getName();
+        }
+    return shape;
 }
 
 // ================================
